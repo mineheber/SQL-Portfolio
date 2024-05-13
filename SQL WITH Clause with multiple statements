@@ -1,6 +1,6 @@
 --The query calculates the sum of odd-numbered and even-numbered measurements separately for a particular day and 
 --displays the results in two different columns: 
---Output columns: measurement_day || odd_sum	 ||   even_sum
+--Output columns: measurement_day || odd_sum || even_sum
 
 -- Using multiple WITH statements with 3 different CTEs:
 

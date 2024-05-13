@@ -1,12 +1,12 @@
---The query calculates the sum of odd-numbered and even-numbered measurements separately for a particular day and 
---displays the results in two different columns: 
---Output columns: measurement_day || odd_sum || even_sum
+-- The query calculates the sum of odd-numbered and even-numbered measurements separately for a particular day and 
+-- displays the results in columns: 
+--   measurement_day || odd_sum || even_sum
 
 -- Using multiple WITH statements with 3 different CTEs:
 
 WITH 
 
--- Every day will be numbered with row-number
+-- Within every day the measurements will be ordered with ROW_NUMBER window function.
 numbered_days AS (
     SELECT 
     measurement_value ,
@@ -14,7 +14,7 @@ numbered_days AS (
     ROW_NUMBER() OVER(PARTITION BY CAST(measurement_time AS DATE) ORDER BY measurement_time ASC) AS day_number
     FROM measurements ) ,
 
--- Odd numbered row-numbers will be added all together for the specific day
+-- Odd numbered row-numbers will be summed over the corresponding measurement_value for the specific day
 odd_numbered AS (
     SELECT 
     measurement_day,
@@ -23,7 +23,7 @@ odd_numbered AS (
     WHERE day_number % 2 = 1
     GROUP BY measurement_day ) ,
 
--- Even numbered row-numbers will be added all together for the specific day
+-- Even numbered row-numbers will be summed over the corresponding measurement_value for the specific day
 even_numbered AS (
     SELECT 
     measurement_day,
@@ -32,7 +32,7 @@ even_numbered AS (
     WHERE day_number % 2 = 0
     GROUP BY measurement_day) 
     
--- All three tables are joined on measurement_day to get the odd and even sums. 
+-- All three CTEs are joined on measurement_day to get the odd and even sums. 
 SELECT
   nd.measurement_day,
   oddn.odd_sum ,

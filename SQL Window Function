@@ -1,19 +1,47 @@
--- Given table :  
---measurements: 
-|-------------------|-------------|
-| measurement_id    |  integer    |
-| measurement_value	|  decimal    |
-| measurement_time	|  datetime   |
+--The query calculates the sum of odd-numbered and even-numbered measurements separately for a particular day and 
+--displays the results in two different columns: 
+--Output columns: measurement_day || odd_sum	 ||   even_sum
 
+-- Using multiple WITH statements with 3 different CTEs:
 
-The query calculate the sum of odd-numbered and even-numbered measurements separately for a particular day and 
-displays the results in two different columns: 
+WITH 
 
-**Output**
-measurement_day	        odd_sum	    even_sum
-07/10/2022 00:00:00	    2355.75	    1662.74
-07/11/2022 00:00:00	    2377.12	    2480.70
-07/12/2022 00:00:00	    2903.40	    1244.30
+-- Every day will be numbered with row-number
+numbered_days AS (
+    SELECT 
+    measurement_value ,
+    CAST(measurement_time AS DATE) AS measurement_day,
+    ROW_NUMBER() OVER(PARTITION BY CAST(measurement_time AS DATE) ORDER BY measurement_time ASC) AS day_number
+    FROM measurements ) ,
 
+-- Odd numbered row-numbers will be added all together for the specific day
+odd_numbered AS (
+    SELECT 
+    measurement_day,
+    SUM(measurement_value) AS odd_sum
+    FROM numbered_days
+    WHERE day_number % 2 = 1
+    GROUP BY measurement_day ) ,
+
+-- Even numbered row-numbers will be added all together for the specific day
+even_numbered AS (
+    SELECT 
+    measurement_day,
+    SUM(measurement_value) AS even_sum
+    FROM numbered_days
+    WHERE day_number % 2 = 0
+    GROUP BY measurement_day) 
+    
+-- All three tables are joined on measurement_day to get the odd and even sums. 
+SELECT
+  nd.measurement_day,
+  oddn.odd_sum ,
+  evenn.even_sum
+FROM numbered_days AS nd JOIN odd_numbered AS oddn ON 
+    nd.measurement_day = oddn.measurement_day
+      JOIN even_numbered AS evenn ON
+      nd.measurement_day = evenn.measurement_day
+GROUP BY nd.measurement_day ,oddn.odd_sum ,evenn.even_sum
+;
 
 

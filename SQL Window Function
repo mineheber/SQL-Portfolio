@@ -1,11 +1,9 @@
-Given table : 
-**measurements**
-| Column Name	      |   Type      |
+-- Given table :  
+--measurements: 
 |-------------------|-------------|
 | measurement_id    |  integer    |
 | measurement_value	|  decimal    |
 | measurement_time	|  datetime   |
-
 
 
 The query calculate the sum of odd-numbered and even-numbered measurements separately for a particular day and 

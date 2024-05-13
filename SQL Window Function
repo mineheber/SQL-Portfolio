@@ -11,4 +11,11 @@ Given table :
 The query calculate the sum of odd-numbered and even-numbered measurements separately for a particular day and 
 displays the results in two different columns: 
 
+**Output**
+measurement_day	        odd_sum	    even_sum
+07/10/2022 00:00:00	    2355.75	    1662.74
+07/11/2022 00:00:00	    2377.12	    2480.70
+07/12/2022 00:00:00	    2903.40	    1244.30
+
+
 

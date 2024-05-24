@@ -1,7 +1,7 @@
 # SQL PORTFOLIO  
 
 
-This repository contains examples of SQL queries for diverse cases throught out my work. 
+This repository contains examples of SQL queries for diverse cases throughtout my work. 
 
 
 ### SQL - With Function
